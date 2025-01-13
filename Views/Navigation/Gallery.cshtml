@@ -1,0 +1,57 @@
+﻿@{
+    ViewData["Title"] = "Food Therapy";
+}
+
+<head>
+    <link rel="stylesheet" href="~/css/stylesheet.css" asp-append-version="true" />
+    <link rel="js" href="~/js/site.js" asp-append-version="true" />
+</head>
+
+<body>
+
+    <div id="containers">
+        <div id="left-container">
+            <div id="table">
+                <ul class="navigation">
+                    <li>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Хомеопатия</a>
+                    </li>
+                    <li>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Navigation" asp-action="Vega">Вега тест</a>
+                    </li>
+                    <li>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Navigation" asp-action="Bah">Цветотерапията на д-р Бах</a>
+                    </li>
+                    <li>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Navigation" asp-action="FoodTherapy">Хранителна терапия</a>
+                    </li>
+                    <li>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Navigation" asp-action="HomeopathyGuide"> Хомеопатичен пътведоител</a>
+                    </li>
+                    <li>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Navigation" asp-action="Book">Болестознание или Кое е първичното - симптомът или болестта</a>
+                    </li>
+                    <li class="activeCategory">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Navigation" asp-action="Gallery"><p>Галерия</p></a>
+                    </li>
+                    <li>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Navigation" asp-action="SuccessStories">Успех наяве</a>
+                    </li>
+                    <li>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Navigation" asp-action="Publications">Публикации</a>
+                    </li>
+                    <li>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Navigation" asp-action="FAQ">Често задавани въпроси</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div id="right-container"></div>
+        <div id="main-content"></div>
+        <div id="foot-container"></div>
+    </div>
+
+</body>
+
+
+

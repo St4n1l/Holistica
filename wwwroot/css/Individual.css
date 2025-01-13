@@ -1,0 +1,59 @@
+﻿.breadcrumbs {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 0.8em;
+}
+
+.breadcrumbs a {
+    color: #9cc646;
+    text-decoration: none;
+}
+
+.breadcrumbs a:hover {
+    text-decoration: underline;
+}
+
+h1 {
+    color: #66a635;
+    font-size: 20px;
+    margin-bottom: 0.5em;
+    background: #f8fcfc;
+    border-left: 5px solid #66a635;
+    padding: 5px 0 4px 10px;
+}
+
+
+img.content-image {
+    width: 100%;
+    max-width: 300px;
+    margin-bottom: 10px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    border: 1px solid #ccc;
+    padding: 8px;
+}
+
+p {
+    font-size: 16px;
+    color: #333;
+}
+
+a.continue-button {
+    display: inline-block; /* Allows padding and dimensions to be applied like a button */
+    padding: 10px;
+    background-color: #38a99f;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none; /* Removes the underline */
+    cursor: pointer;
+    text-align: center;
+    margin-bottom: 1.5em;
+    margin-top: 0.5em;
+}
+
+a.continue-button:hover {
+background-color: #33a8a0;
+
+}

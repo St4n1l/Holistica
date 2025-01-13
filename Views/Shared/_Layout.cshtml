@@ -1,0 +1,87 @@
+﻿<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+    <link href="@Url.Content("~/css/Layout.css")" rel="stylesheet" type="text/css" />
+    @RenderSection("Styles", false)
+</head>
+<body>
+    @* <!-- Full-width banner image -->
+    <div class="banner-image">
+        <img src="https://example.com/nature-banner.jpg" alt="Nature Banner" />
+    </div> *@
+
+    <div class="header">
+        <div class="top-nav">
+            <ul>
+                <li><a asp-controller="Home" asp-action="Index">Начало</a></li>
+                <li><a asp-controller="Navigation" asp-action="Homeopathy">За нас</a></li>
+                <li><a asp-controller="Navigation" asp-action="Homeopathy">Контакти</a></li>
+                <li><a asp-controller="Shop" asp-action="Index">Магазин</a></li>
+            </ul>
+        </div>
+        <div class="search-bar">
+            <input type="text" placeholder="Търсене..." />
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="nature-background"></div>
+
+        <div class="sidebar">
+            <ul>
+                <li><a asp-controller="Navigation" asp-action="Homeopathy">Хомеопатия</a></li>
+                <li><a asp-controller="Navigation" asp-action="Vega">Вега тест</a></li>
+                <li><a asp-controller="Navigation" asp-action="Bah">Цветотерапията на д-р Бах</a></li>
+                <li><a asp-controller="Navigation" asp-action="FoodTherapy">Хранителна терапия</a></li>
+                <li><a asp-controller="Navigation" asp-action="HomeopathyGuide">Хомеопатичен пътеводител</a></li>
+                <li><a asp-controller="Navigation" asp-action="Book">Болестознание</a></li>
+                <li><a asp-controller="Navigation" asp-action="Gallery">Галерия</a></li>
+                <li><a asp-controller="Navigation" asp-action="SuccessStories">Успех наяве</a></li>
+                <li><a asp-controller="Navigation" asp-action="Publications">Публикации</a></li>
+                <li><a asp-controller="Navigation" asp-action="FAQ">Често задавани въпроси</a></li>
+            </ul>
+
+            <div class="section">
+                <h3>За лекари</h3>
+                <img src="~/images/2.jpg" alt="Forest Image" class="sidebar-image" />
+            </div>
+
+            <div class="section">
+                <h3>Мнения клиенти</h3>
+
+                <div class="client-review">
+                    <h4>Последната ми надежда</h4>
+                    <p>
+                        Научих за д-р Хаджиев през 2007 г. - беше последната ми надежда да намеря изход от вече 4 години продължилата ми болест...
+                    </p>
+                    <button class="continue-button">Продължава...</button>
+                </div>
+
+                <div class="client-review">
+                    <h4>Не само лекар, но и незаменим приятел</h4>
+                    <p>
+                        Първата ми среща с д-р Хаджиев, беше преди 12 години. След година и половина лутане от лекар на лекар и от кабинет на кабинет...
+                    </p>
+                    <button class="continue-button">Продължава...</button>
+                </div>
+
+                <div class="more-opinions">
+                    <a asp-controller="Navigation" asp-action="Homeopathy">Вижте всички мнения</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content Section -->
+        <div class="main-content">
+            @RenderBody() <!-- This renders the main view content -->
+        </div>
+
+        <div class="nature-background"></div>
+    </div>
+
+    @RenderSection("scripts", required: false)
+</body>
+</html>
