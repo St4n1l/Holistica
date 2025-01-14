@@ -1,10 +1,11 @@
 ﻿using Holistica.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Holistica.Data
 {
-    public class ApplicationDbContext : IdentityDbContext
+    public class ApplicationDbContext : IdentityDbContext<IdentityUser, IdentityRole, string>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -21,25 +22,22 @@ namespace Holistica.Data
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<ApplicationUser>()
-                .HasOne(u => u.Cart) // ApplicationUser has one Cart
+                .HasOne(u => u.Cart)
                 .WithOne(c => c.User)
                 .HasForeignKey<ApplicationUser>(u => u.CartId)
-                .OnDelete(DeleteBehavior.Cascade); // Delete cart when user is deleted
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Cart>()
-                .HasMany(c => c.CartItems) // Cart has many CartItems
-                .WithOne(ci => ci.Cart) // CartItem has one Cart
-                .HasForeignKey(ci => ci.CartId) // Foreign key in CartItem
-                .OnDelete(DeleteBehavior.Cascade); // Delete cart items when cart is deleted
+                .HasMany(c => c.CartItems)
+                .WithOne(ci => ci.Cart)
+                .HasForeignKey(ci => ci.CartId)
+                .OnDelete(DeleteBehavior.Cascade);
 
-            // Relationship between CartItem and Product
             modelBuilder.Entity<CartItem>()
-                .HasOne(ci => ci.Product) // CartItem has one Product
-                .WithMany() // Product can be in many CartItems
-                .HasForeignKey(ci => ci.ProductId) // Foreign key in CartItem
-                .OnDelete(DeleteBehavior.Cascade); // Delete cart item when product is deleted
+                .HasOne(ci => ci.Product)
+                .WithMany()
+                .HasForeignKey(ci => ci.ProductId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
-
-
 }

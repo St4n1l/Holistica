@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using Holistica.Data;
 using Holistica.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -40,7 +41,8 @@ namespace Holistica.Controllers
             return PartialView(product);
         }
 
-        public ActionResult Admin()
+        [Authorize]
+        public ActionResult AddProduct()
         {
             return PartialView();
         }

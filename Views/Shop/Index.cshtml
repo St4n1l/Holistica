@@ -15,6 +15,12 @@
 			<li><a asp-controller="Navigation" asp-action="Homeopathy">За нас</a></li>
 			<li><a asp-controller="Navigation" asp-action="Homeopathy">Контакти</a></li>
 			<li><a asp-controller="Shop" asp-action="Index">Магазин</a></li>
+			
+			@if (User.IsInRole("Admin"))
+			{
+				<li><a asp-controller="Shop" asp-action="AddProduct">Добави продукт</a></li>
+			}
+
 		</ul>
 	</div>
 	<div class="search-bar">

@@ -47,6 +47,11 @@ namespace Holistika.Controllers
         {
             return View();
         }
-        
+
+        public IActionResult ForDocs()
+        {
+            return View();
+        }
+
     }
 }
