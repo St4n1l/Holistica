@@ -1,9 +1,10 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Threading.Tasks;
+﻿using Holistica.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
-public static class SeedData
+namespace Holistica.Data;
+
+public static class SessionExtension
 {
     public static async Task Initialize(IServiceProvider serviceProvider)
     {
@@ -11,7 +12,7 @@ public static class SeedData
         var userManager = serviceProvider.GetRequiredService<UserManager<IdentityUser>>();
 
         // Seed roles
-        string[] roleNames = { "Admin", "User" };
+        string[] roleNames = ["Admin", "User"];
 
         foreach (var roleName in roleNames)
         {
@@ -30,7 +31,7 @@ public static class SeedData
             EmailConfirmed = true
         };
 
-        string adminPassword = "BroImSuffering123@";
+        const string adminPassword = "BroImSuffering123@";
 
         var user = await userManager.FindByEmailAsync(adminUser.Email);
 
@@ -49,5 +50,24 @@ public static class SeedData
                 }
             }
         }
+
+        //Seed products
+        await using var context =
+            new ApplicationDbContext(serviceProvider.GetRequiredService<DbContextOptions<ApplicationDbContext>>());
+
+        if (context.Products.Any())
+        {
+            return;
+        }
+
+        var products = new List<Product>
+        {
+            new Product { ProductId = Guid.NewGuid(), Name = "Med1", ImageUrl = "1.webp", Price = 10.99m, Description = "med1" },
+            new Product { ProductId = Guid.NewGuid(), Name = "Med2", ImageUrl = "2.webp", Price = 15.99m, Description = "med2" },
+            new Product { ProductId = Guid.NewGuid(), Name = "Med3", ImageUrl = "3.webp", Price = 20.99m, Description = "med3" },
+        };
+
+        await context.AddRangeAsync(products);
+        await context.SaveChangesAsync();
     }
 }

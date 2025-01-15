@@ -18,7 +18,7 @@ namespace Holistica.Models
         public decimal Price { get; set; }
 
         [Required(ErrorMessage = "Quantity is required.")]
-        [Range(0, int.MaxValue, ErrorMessage = "Quantity cannot be negative.")]
+        [Range(1, int.MaxValue, ErrorMessage = "Quantity cannot be negative.")]
         public int Quantity { get; set; }
 
         [Required] 

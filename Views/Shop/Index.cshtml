@@ -7,6 +7,7 @@
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 <link rel="stylesheet" href="~/css/Shop.css" />
+<script src="js/addtocart.js"></script>
 
 <div class="header">
 	<div class="top-nav">
@@ -19,6 +20,7 @@
 			@if (User.IsInRole("Admin"))
 			{
 				<li><a asp-controller="Shop" asp-action="AddProduct">Добави продукт</a></li>
+				<li><a asp-controller="Shop" asp-action="AddQuantity">Добави количество</a></li>
 			}
 
 		</ul>
@@ -31,8 +33,13 @@
 <div class="container">
 	<div class="items">
 
-		@foreach (Product product in Model)
+		@foreach (var product in Model)
 		{
+			@* if (product.Quantity == 0)
+			{
+				continue;
+			} *@
+
 			<div class="item">
 				<div class="productImage">
 					<a href="@Url.Action("Details", "Shop", new { id = product.ProductId })">
@@ -41,6 +48,7 @@
 				</div>
 				<div class="productName"><h4>@product.Name</h4></div>
 				<div class="productPrice"><h5>@product.Price</h5></div>
+				<div class="productAddToCart"><button>Купи</button></div>
 			</div>
 		}
 

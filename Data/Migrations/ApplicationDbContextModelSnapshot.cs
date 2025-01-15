@@ -34,7 +34,7 @@ namespace Holistica.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Carts");
+                    b.ToTable("Carts", (string)null);
                 });
 
             modelBuilder.Entity("Holistica.Models.CartItem", b =>
@@ -58,7 +58,7 @@ namespace Holistica.Data.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("CartItems");
+                    b.ToTable("CartItems", (string)null);
                 });
 
             modelBuilder.Entity("Holistica.Models.Product", b =>
@@ -88,7 +88,7 @@ namespace Holistica.Data.Migrations
 
                     b.HasKey("ProductId");
 
-                    b.ToTable("Products");
+                    b.ToTable("Products", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

@@ -16,23 +16,16 @@ namespace Holistica.Controllers
             _context = dbContext;
         }
 
-        public ActionResult Index()
+        public async Task<ActionResult> IndexAsync()
         {
-            var products = new List<Product>
-            {
-                new Product { ProductId = Guid.NewGuid(), Name = "Med1", ImageUrl = "1.webp", Price = 10.99m },
-                new Product { ProductId = Guid.NewGuid(), Name = "Med2", ImageUrl = "2.webp", Price = 15.99m },
-                new Product { ProductId = Guid.NewGuid(), Name = "Med3", ImageUrl = "3.webp", Price = 20.99m },
-                new Product { ProductId = Guid.NewGuid(), Name = "Med3", ImageUrl = "3.webp", Price = 20.99m },
-            };
-
+            var products = await _context.Products.ToListAsync();
             return PartialView(products);
         }
 
 
-        public ActionResult Details(Guid id)
+        public async Task<ActionResult> Details(Guid id)
         {
-            var product = _context.Products.Find(id);
+            var product = await _context.Products.FindAsync(id);
             if (product == null)
             {
                 return NotFound();
@@ -43,6 +36,11 @@ namespace Holistica.Controllers
 
         [Authorize]
         public ActionResult AddProduct()
+        {
+            return PartialView();
+        }
+
+        public ActionResult AddQuantity()
         {
             return PartialView();
         }

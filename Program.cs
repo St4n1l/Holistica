@@ -1,8 +1,10 @@
 using Holistica.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
+v
 
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
@@ -21,8 +23,16 @@ builder.Services.AddRazorPages();
 // Add MVC (if you're using controllers and views)
 builder.Services.AddControllersWithViews();
 
-var app = builder.Build();
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30);
+    options.Cookie.HttpOnly = true; // Make the session cookie HTTP-only for security
+    options.Cookie.IsEssential = true;
 
+}); // Set session timeout
+
+var app = builder.Build();
+app.UseSession();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -54,7 +64,7 @@ app.MapControllerRoute(
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
-    await SeedData.Initialize(services);
+    await SessionExtension.Initialize(services);
 }
 
 app.Run();
