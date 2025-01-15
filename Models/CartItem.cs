@@ -12,14 +12,7 @@ namespace Holistica.Models
 
         [Required]
         [ForeignKey("ProductId")]
-        public Product Product{ get; set; }
-
-        public Guid CartId { get; set; }
-
-
-        [Required]
-        [ForeignKey("CartId")]
-        public Cart Cart { get; set; } = null!;
+        public Product Product { get; set; }
 
         public int Quantity { get; set; }
     }

@@ -1,22 +1,19 @@
-﻿<><script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script><script>
-    $(document).ready(function() {$('.product-button').click(function() {
-        var productId = $(this).data('product-id');
-        var userId = $('#userId').val();
+﻿
+$(document).ready(function () {
+    $(".addToCart").click(function (e) {
+        e.preventDefault();
+        var productId = $(this).data("product-id");
 
         $.ajax({
-            url: '@Url.Action("HandleButtonClick", "Product")',
-            type: 'POST',
-            data: {
-                productId: productId,
-                userId: userId
+            url: "/Cart/AddToCart",
+            type: "GET",
+            data: { productId: productId },
+            success: function (response) {
+                alert("Product added to cart!");
             },
-            success: function(response) {
-                console.log('Server response:', response);
-            },
-            error: function(xhr, status, error) {
-                console.error('Error:', error);
+            error: function () {
+                alert("An error occurred while adding the product to the cart.");
             }
         });
-    })};
     });
-</script></>
+});

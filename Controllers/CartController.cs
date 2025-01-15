@@ -1,8 +1,10 @@
 using System.Diagnostics;
+using Holistica.Cookie;
 using Holistica.Data;
 using Holistica.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Holistica.Controllers
 {
@@ -25,11 +27,12 @@ namespace Holistica.Controllers
 
             }
 
-            var cart = HttpContext.Session.Get<List<CartItem>>("Cart");
+            var cart = HttpContext.Session.Get<List<CartItem>>("Cart") ?? CookieHelper.GetCartCookie(HttpContext);
 
             cart ??= new List<CartItem>();
 
             var existingCartItem = cart.FirstOrDefault(ci => ci.ProductId == productId);
+
             if (existingCartItem != null)
             {
                 // If the product is already in the cart, increase the quantity
@@ -43,21 +46,32 @@ namespace Holistica.Controllers
                     ProductId = productId,
                     Quantity = 1
                 };
+
                 cart.Add(newCartItem);
             }
 
             // Save the updated cart back to the session
-            HttpContext.Session.Set("Cart", cart);
+            HttpContext.Session.Set("Cart", cart); 
+            CookieHelper.SetCartCookie(HttpContext, cart);
 
-            // Optionally, you can return a success message or redirect to the cart page
             return RedirectToAction("Index", "Cart"); // Redirect to the cart view
         }
 
-    }
 
         public IActionResult Index()
         {
-            return View();
+            var cartItems = HttpContext.Session.Get<List<CartItem>>("Cart") ?? new List<CartItem>();
+
+            // Fetch product details for each item in the cart
+            var productIds = cartItems.Select(item => item.ProductId).ToList();
+            var products = dbContext.Products.Where(p => productIds.Contains(p.ProductId)).ToList();
+
+            var cart = new Cart
+            {
+                Items = cartItems
+            };
+
+            return PartialView(cart);
         }
 
         //[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

@@ -1,19 +1,40 @@
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace Holistica.Models
+﻿namespace Holistica.Models
 {
     public class Cart
     {
-        [Key]
-        public Guid Id { get; set; } = Guid.NewGuid();
+        public List<CartItem> Items = new List<CartItem>();
 
-        public string UserId { get; set; } = null!;
+        public void AddItem(Guid productId, int quantity)
+        {
+            var existingItem = Items.FirstOrDefault(item => item.ProductId == productId);
+            if (existingItem != null)
+            {
+                existingItem.Quantity += quantity; // Update quantity if the item already exists
+            }
+            else
+            {
+                Items.Add(new CartItem { ProductId = productId, Quantity = quantity }); // Add new item
+            }
+        }
 
-        [Required]
-        [ForeignKey("UserId")]
-        public ApplicationUser User { get; set; } = null!;
+        // Helper method to remove a product from the cart
+        public void RemoveItem(Guid productId)
+        {
+            var itemToRemove = Items.FirstOrDefault(item => item.ProductId == productId);
+            if (itemToRemove != null)
+            {
+                Items.Remove(itemToRemove);
+            }
+        }
 
-        public ICollection<CartItem> CartItems { get; set; } = new List<CartItem>();
+        // Helper method to update the quantity of a product in the cart
+        public void UpdateQuantity(Guid productId, int quantity)
+        {
+            var itemToUpdate = Items.FirstOrDefault(item => item.ProductId == productId);
+            if (itemToUpdate != null)
+            {
+                itemToUpdate.Quantity = quantity;
+            }
+        }
     }
 }

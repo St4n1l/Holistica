@@ -11,10 +11,5 @@ namespace Holistica.Models
 
         [Required] 
         public string LastName { get; set; } = null!;
-
-        public Guid? CartId { get; set; }
-
-        [ForeignKey("CartId")]
-        public Cart Cart { get; set; } = null!;
     }
 }

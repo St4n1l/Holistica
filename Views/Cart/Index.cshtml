@@ -1,5 +1,20 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@model Holistica.Models.Cart
+
+<div class="cart">
+	<h2>Your Cart</h2>
+	@if (Model.Items.Any())
+	{
+		<ul>
+			@foreach (var item in Model.Items)
+			{
+				<li>
+					Product ID: @item.ProductId - Quantity: @item.Quantity
+				</li>
+			}
+		</ul>
+	}
+	else
+	{
+		<p>Your cart is empty.</p>
+	}
+</div>

@@ -7,6 +7,7 @@
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 <link rel="stylesheet" href="~/css/Shop.css" />
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="js/addtocart.js"></script>
 
 <div class="header">
@@ -16,6 +17,7 @@
 			<li><a asp-controller="Navigation" asp-action="Homeopathy">За нас</a></li>
 			<li><a asp-controller="Navigation" asp-action="Homeopathy">Контакти</a></li>
 			<li><a asp-controller="Shop" asp-action="Index">Магазин</a></li>
+			<li><a asp-controller="Cart" asp-action="Index">Виж количка</a></li>
 			
 			@if (User.IsInRole("Admin"))
 			{
@@ -48,7 +50,7 @@
 				</div>
 				<div class="productName"><h4>@product.Name</h4></div>
 				<div class="productPrice"><h5>@product.Price</h5></div>
-				<div class="productAddToCart"><button>Купи</button></div>
+				<button type="submit" class="addToCart" data-product-id="@product.ProductId">Купи</button>
 			</div>
 		}
 
