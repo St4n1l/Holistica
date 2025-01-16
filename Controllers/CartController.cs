@@ -35,12 +35,10 @@ namespace Holistica.Controllers
 
             if (existingCartItem != null)
             {
-                // If the product is already in the cart, increase the quantity
                 existingCartItem.Quantity++;
             }
             else
             {
-                // If the product is not in the cart, add it
                 var newCartItem = new CartItem
                 {
                     ProductId = productId,
@@ -50,21 +48,16 @@ namespace Holistica.Controllers
                 cart.Add(newCartItem);
             }
 
-            // Save the updated cart back to the session
             HttpContext.Session.Set("Cart", cart); 
             CookieHelper.SetCartCookie(HttpContext, cart);
 
-            return RedirectToAction("Index", "Cart"); // Redirect to the cart view
+            return RedirectToAction("Index", "Cart");
         }
 
 
         public IActionResult Index()
         {
             var cartItems = HttpContext.Session.Get<List<CartItem>>("Cart") ?? new List<CartItem>();
-
-            // Fetch product details for each item in the cart
-            var productIds = cartItems.Select(item => item.ProductId).ToList();
-            var products = dbContext.Products.Where(p => productIds.Contains(p.ProductId)).ToList();
 
             var cart = new Cart
             {
@@ -73,11 +66,5 @@ namespace Holistica.Controllers
 
             return PartialView(cart);
         }
-
-        //[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        //public IActionResult Error()
-        //{
-        //    return View(new Product { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        //}
     }
 }
