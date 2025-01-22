@@ -17,7 +17,7 @@
 			<li><a asp-controller="Navigation" asp-action="Homeopathy">За нас</a></li>
 			<li><a asp-controller="Navigation" asp-action="Homeopathy">Контакти</a></li>
 			<li><a asp-controller="Shop" asp-action="Index">Магазин</a></li>
-			<li><a asp-controller="Cart" asp-action="Index">Виж количка</a></li>
+			<li><a asp-controller="Cart" asp-action="ViewCart">Виж количка</a></li>
 			
 			@if (User.IsInRole("Admin"))
 			{
@@ -37,10 +37,6 @@
 
 		@foreach (var product in Model)
 		{
-			@* if (product.Quantity == 0)
-			{
-				continue;
-			} *@
 
 			<div class="item">
 				<div class="productImage">
@@ -50,7 +46,7 @@
 				</div>
 				<div class="productName"><h4>@product.Name</h4></div>
 				<div class="productPrice"><h5>@product.Price</h5></div>
-				<button type="submit" class="addToCart" data-product-id="@product.ProductId">Купи</button>
+				<a asp-controller="Cart" asp-action="AddToCart" asp-route-productId="@product.ProductId">Купи</a>
 			</div>
 		}
 

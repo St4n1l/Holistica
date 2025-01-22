@@ -1,70 +1,58 @@
-using System.Diagnostics;
-using Holistica.Cookie;
+using System.Text;
+using System.Text.Json;
 using Holistica.Data;
 using Holistica.Models;
+using Holistica.Models.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
-namespace Holistica.Controllers
+public class CartController : Controller
 {
-    public class CartController : Controller
+    private const string CartSessionKey = "Cart";
+    private readonly ApplicationDbContext _context;
+
+    public CartController(ApplicationDbContext dbContext)
     {
-        private readonly ApplicationDbContext dbContext;
-
-        public CartController(ApplicationDbContext context)
-        {
-            dbContext = context;
-        }
-
-        public async Task<IActionResult> AddToCartAsync(Guid productId)
-        {
-
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString("GuestUserId")))
-            {
-                var guestUserId = Guid.NewGuid().ToString();
-                HttpContext.Session.SetString("GuestUserId", guestUserId);
-
-            }
-
-            var cart = HttpContext.Session.Get<List<CartItem>>("Cart") ?? CookieHelper.GetCartCookie(HttpContext);
-
-            cart ??= new List<CartItem>();
-
-            var existingCartItem = cart.FirstOrDefault(ci => ci.ProductId == productId);
-
-            if (existingCartItem != null)
-            {
-                existingCartItem.Quantity++;
-            }
-            else
-            {
-                var newCartItem = new CartItem
-                {
-                    ProductId = productId,
-                    Quantity = 1
-                };
-
-                cart.Add(newCartItem);
-            }
-
-            HttpContext.Session.Set("Cart", cart); 
-            CookieHelper.SetCartCookie(HttpContext, cart);
-
-            return RedirectToAction("Index", "Cart");
-        }
-
-
-        public IActionResult Index()
-        {
-            var cartItems = HttpContext.Session.Get<List<CartItem>>("Cart") ?? new List<CartItem>();
-
-            var cart = new Cart
-            {
-                Items = cartItems
-            };
-
-            return PartialView(cart);
-        }
+        _context = dbContext;
     }
+
+    public IActionResult ViewCart()
+    {
+        var cartView = HttpContext.Session.Get<List<CartItem>>(CartSessionKey) ?? new List<CartItem>();
+
+        var cartViewModel = new CartItemViewModel()
+        {
+            CartItems = cartView,
+            TotalPrice = cartView.Sum(item => item.Product.Price * item.Quantity)
+        };
+
+        return PartialView(cartViewModel);
+    }
+
+    public IActionResult AddToCart(Guid productId)
+    {
+        var productToAdd = _context.Products.Find(productId);
+
+        var cartItems = HttpContext.Session.Get<List<CartItem>>(CartSessionKey) ?? new List<CartItem>();
+
+        var cartItem = cartItems.FirstOrDefault(ci => ci.Product.ProductId == productId);
+
+        if (cartItem != null)
+        {
+            cartItem.Quantity++;
+        }
+        else
+        {
+            cartItems.Add(new CartItem
+            {
+                Product = productToAdd,
+                Quantity = 1
+            });
+        }
+
+        HttpContext.Session.Set(CartSessionKey, cartItems);
+
+        return RedirectToAction("ViewCart");
+    }
+
 }

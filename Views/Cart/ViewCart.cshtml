@@ -1,11 +1,11 @@
-﻿@model Holistica.Models.Cart
+﻿@model Holistica.Models.ViewModels.CartItemViewModel
 
 <div class="cart">
 	<h2>Your Cart</h2>
-	@if (Model.Items.Any())
+	@if (Model.CartItems.Any())
 	{
 		<ul>
-			@foreach (var item in Model.Items)
+			@foreach (var item in Model.CartItems)
 			{
 				<li>
 					Product ID: @item.ProductId - Quantity: @item.Quantity
