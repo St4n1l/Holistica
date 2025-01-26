@@ -1,20 +1,88 @@
-﻿@model Holistica.Models.ViewModels.CartItemViewModel
+﻿@using System.Globalization
+@model Holistica.Models.ViewModels.CartItemViewModel
+<head>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+	<link rel="stylesheet" href="~/css/cart.css" />
+</head>
 
-<div class="cart">
-	<h2>Your Cart</h2>
-	@if (Model.CartItems.Any())
-	{
-		<ul>
-			@foreach (var item in Model.CartItems)
-			{
-				<li>
-					Product ID: @item.ProductId - Quantity: @item.Quantity
-				</li>
-			}
-		</ul>
-	}
-	else
-	{
-		<p>Your cart is empty.</p>
-	}
+<div class="container cart-container">
+    <h3 class="mb-4">
+        <i class="fas fa-shopping-cart me-2"></i>Your Shopping Cart
+    </h3>
+
+    @if (Model.CartItems.Any())
+    {
+        <div class="table-responsive">
+            <table class="table cart-table">
+                <thead class="table-light">
+                    <tr>
+                        <th scope="col">Product</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col">Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.CartItems)
+                    {
+                        <tr class="cart-item">
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    @if (!string.IsNullOrEmpty(item.Product.ImageUrl))
+                                    {
+	                                    <img src="@Url.Content($"~/images/shop images/{item.Product.ImageUrl}")"
+	                                         class="img-thumbnail me-3"
+                                             alt="@item.Product.Name">
+                                    }
+                                    <div>
+                                        <h5 class="mb-0">@item.Product.Name</h5>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="align-middle">@item.Product.Price.ToString("C", CultureInfo.CreateSpecificCulture("bg-BG"))</td>
+                            <td class="align-middle">
+                                <div class="quantity-container">
+                                    <span class="quantity">@item.Quantity</span>
+                                </div>
+                            </td>
+                            <td class="align-middle fw-bold">
+                                @((item.Product.Price * item.Quantity).ToString("C", CultureInfo.CreateSpecificCulture("bg-BG")))
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <div class="cart-summary">
+            <div class="row">
+                <div class="col-md-6 offset-md-6">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <h4 class="mb-0">Total:</h4>
+                        <h4 class="mb-0 text-primary">@Model.TotalPrice.ToString("C", CultureInfo.CreateSpecificCulture("bg-BG"))</h4>
+                    </div>
+                    <div class="d-grid gap-2 d-md-flex justify-content-end mt-4">
+                        <a asp-controller="Shop" asp-action="Index" class="btn btn-outline-secondary btn-lg">
+                            <i class="fas fa-arrow-left me-2"></i>Continue Shopping
+                        </a>
+                        <a href="#" class="btn btn-primary btn-lg">
+                            Checkout <i class="fas fa-credit-card ms-2"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="empty-cart text-center">
+            <i class="fas fa-shopping-cart fa-4x text-muted mb-4"></i>
+            <h4 class="text-muted">Your cart is empty</h4>
+            <p class="text-muted mt-3">Start adding items to your cart!</p>
+            <a asp-controller="Shop" asp-action="Index" class="btn btn-primary mt-3">
+                <i class="fas fa-store me-2"></i>Start Shopping
+            </a>
+        </div>
+    }
 </div>
