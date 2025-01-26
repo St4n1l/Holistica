@@ -4,213 +4,242 @@
     box-sizing: border-box;
 }
 
-body {
-    font-family: Arial, sans-serif;
-    background-color: #ffffff;
+:root {
+    --primary-color: #78982E;
+    --secondary-color: #2c9c8a;
+    --accent-color: #f5a623;
+    --background-color: #f8f9fa;
+    --text-color: #333;
 }
 
-.banner-image img {
-    width: 100%;
-    height: auto;
-    max-height: 400px;
-    object-fit: cover;
+body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    color: var(--text-color);
+    line-height: 1.6;
+    background: linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.9)), url('https://images.unsplash.com/photo-1511497584788-876760111969?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80');
+    background-size: cover;
+    background-attachment: fixed;
+    min-height: 100vh;
 }
 
 .header {
-    background-color: #9cc646;
-    padding: 10px;
+    background-color: var(--primary-color);
+    padding: 1rem 2rem;
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
 
 .top-nav ul {
     list-style: none;
     display: flex;
+    gap: 2rem;
 }
 
-    .top-nav ul li {
-        margin-right: 20px;
+    .top-nav ul li a {
+        color: white;
+        text-decoration: none;
+        padding: 0.5rem 1rem;
+        border-radius: 4px;
+        transition: all 0.3s ease;
+        position: relative;
+        font-weight: 500;
     }
 
-        .top-nav ul li a {
-            color: white;
-            text-decoration: none;
+        .top-nav ul li a:hover {
+            background: rgba(255,255,255,0.15);
         }
 
-.search-bar input {
-    padding: 5px;
-    border-radius: 3px;
-    border: 1px solid #ddd;
+.search-bar {
+    position: relative;
+    flex-shrink: 0;
 }
+
+    .search-bar input {
+        padding: 0.8rem 1.2rem;
+        border-radius: 25px;
+        border: 2px solid rgba(255,255,255,0.3);
+        background: rgba(255,255,255,0.1);
+        color: white;
+        width: 300px;
+        transition: all 0.3s ease;
+        backdrop-filter: blur(5px);
+    }
+
+        .search-bar input::placeholder {
+            color: rgba(255,255,255,0.7);
+        }
+
+        .search-bar input:focus {
+            outline: none;
+            background: rgba(255,255,255,0.2);
+            width: 350px;
+        }
 
 .container {
     display: flex;
-    margin: 20px auto;
-    max-width: 1200px;
-}
-
-.nature-background {
-    flex: 0.1;
-    background: url('https://example.com/waterfall.jpg') no-repeat center center;
-    background-size: cover;
+    margin: 2rem auto;
+    max-width: 1400px;
+    gap: 2rem;
+    padding: 0 2rem;
+    position: relative;
 }
 
 .sidebar {
-    width: 30%;
-    background-color: #f1f1f1;
-    padding: 10px;
-    border-right: 1px solid #ddd;
-    margin-right: 1em;
-    height: 79em;
-    border-radius: 15px;
+
+    width: 300px;
+    min-width: 300px;
+    background: white;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
 }
 
-    .sidebar ul {
-        list-style: none;
+    .sidebar ul li 
+    {
+        list-style-type: none;
+        margin-bottom: 0.8rem;
     }
 
-        .sidebar ul li {
-            margin-bottom: 10px;
-            padding: 5px;
+        .sidebar ul li a 
+        {
+            text-decoration: none;
+            color: var(--text-color);
+            padding: 0.8rem 1rem;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
-            .sidebar ul li a {
-                color: #333;
-                text-decoration: none;
-                display: block;
-                padding: 5px;
-                border-bottom: 1px solid #ddd;
+            .sidebar ul li a:hover {
+                background: var(--primary-color);
+                color: white;
+                transform: translateX(5px);
             }
 
-                .sidebar ul li a:hover {
-                    background-color: #9cc646;
-                    color: white;
-                }
-
 .main-content {
-    width: 70%;
+    flex: 1;
+    background: white;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
 }
 
 h3 {
-    background-color: #9cc646;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
     color: white;
-    padding: 10px;
-    font-size: 18px;
-    margin-bottom: 10px;
-    border-radius: 5px;
+    padding: 1rem;
+    border-radius: 8px;
+    margin: 1.5rem 0;
+    font-weight: 600;
+    letter-spacing: 0.5px;
 }
 
 .sidebar-image {
     width: 100%;
-    border-radius: 10px;
-    margin-bottom: 10px;
+    border-radius: 8px;
+    margin: 1rem 0;
+    transition: transform 0.3s ease;
 }
 
-.client-review {
-    background-color: #f9f9f9;
-    padding: 10px;
-    margin-bottom: 10px;
-    border-radius: 5px;
-    border: 1px solid #ddd;
-}
-
-    .client-review h4 {
-        font-size: 16px;
-        margin-bottom: 5px;
-        color: #9cc646;
+    .sidebar-image:hover {
+        transform: scale(1.02);
     }
 
-    .client-review p {
-        font-size: 14px;
-        margin-bottom: 10px;
-        color: #333;
+.client-review {
+    background: var(--background-color);
+    padding: 1.2rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    position: relative;
+    transition: transform 0.2s ease;
+}
+
+    .client-review:hover {
+        transform: translateY(-3px);
+    }
+
+    .client-review h4 {
+        color: var(--secondary-color);
+        margin-bottom: 0.5rem;
+        font-size: 1.1rem;
     }
 
     .client-review button {
-        padding: 5px 10px;
-        background-color: #38a99f;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
+        background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+        padding: 0.6rem 1.5rem;
+        border-radius: 20px;
+        font-weight: 500;
+        transition: all 0.3s ease;
     }
 
         .client-review button:hover {
-            background-color: #33a8a0;
+            opacity: 0.9;
+            transform: translateY(-1px);
+            box-shadow: 0 3px 8px rgba(0,0,0,0.15);
         }
 
-
-div.more-opinions a {
-    text-decoration: none;
-    color: #78982E;
+.more-opinions a {
+    color: var(--secondary-color);
+    font-weight: 500;
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    transition: all 0.2s ease;
 }
 
-a:hover {
-    text-decoration: underline;
-}
+    .more-opinions a:hover {
+        background: rgba(44,156,138,0.1);
+    }
 
-@media (max-width: 1024px) 
-{
+@media (max-width: 1200px) {
     .container {
         flex-direction: column;
-        align-items: center;
-    }
-
-    .nature-background {
-        display: none;
-    }
-
-    .banner-image img {
-        max-height: 250px;
+        padding: 0 1rem;
     }
 
     .sidebar {
         width: 100%;
+        margin-right: 0;
     }
-    .main-content {
+}
+
+@media (max-width: 768px) {
+    .header {
+        flex-direction: column;
+        gap: 1rem;
+        padding: 1rem;
+    }
+
+    .search-bar input {
         width: 100%;
     }
 
-        .sidebar a {
-            text-align: center;
+        .search-bar input:focus {
+            width: 100%;
         }
 
-    div.section img {
-        width: 40%;
-        display: block;
-        margin-left: auto;
-        margin-right: auto;
-    }
-}
-
-@media (max-width: 768px) 
-{
     .top-nav ul {
-        flex-direction: column;
-        align-items: center;
-    }
-
-        .top-nav ul li {
-            margin-bottom: 10px;
-            margin-right: 0;
-        }
-
-    .search-bar {
-        margin-top: 10px;
+        flex-wrap: wrap;
+        justify-content: center;
     }
 }
 
-@media (max-width: 480px) 
-{
-    .banner-image img {
-        max-height: 200px;
+@media (max-width: 480px) {
+    .main-content {
+        padding: 1rem;
     }
 
-    .breadcrumbs, p {
-        font-size: 14px;
+    .client-review {
+        padding: 1rem;
     }
 
-    h1, h2 {
-        font-size: 18px;
+    .sidebar {
+        padding: 1rem;
     }
 }
