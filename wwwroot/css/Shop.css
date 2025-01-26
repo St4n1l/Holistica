@@ -1,97 +1,201 @@
-﻿* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+﻿body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    color: var(--text-color);
+    line-height: 1.6;
+    background: linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.9)), url("../images/background.jpg");
+    background-size: cover;
+    background-attachment: fixed;
+    min-height: 100vh;
 }
 
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f9f9f9; /* Softer background color for better contrast */
-    color: #333; /* Default text color */
-}
 
 .header {
-    background-color: #9cc646;
-    padding: 15px 20px; /* Increased padding for better spacing */
-    display: flex;
-    justify-content: space-between;
-    align-items: center; /* Vertically center items */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    background: #fff;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    padding: 15px 0;
 }
 
-.top-nav ul {
-    list-style: none;
-    display: flex;
-    gap: 20px; /* Use gap for consistent spacing between items */
+.top-nav {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 20px;
 }
 
-    .top-nav ul li a {
-        color: white;
-        text-decoration: none;
-        font-weight: bold; /* Make navigation links stand out */
-        transition: color 0.3s ease; /* Smooth hover effect */
+    .top-nav ul {
+        list-style: none;
+        display: flex;
+        gap: 2rem;
+        margin: 0;
+        padding: 0;
+        flex-wrap: wrap;
     }
 
-        .top-nav ul li a:hover {
-            color: #e0f7fa; /* Light hover color for better interaction */
+    .top-nav li {
+        font-family: 'Segoe UI', sans-serif;
+    }
+
+    .top-nav a {
+        text-decoration: none;
+        color: #2c9c8a;
+        font-weight: 500;
+        transition: color 0.3s ease;
+    }
+
+        .top-nav a:hover {
+            color: #78982E;
         }
 
-.search-bar input {
-    padding: 8px 12px; /* Slightly larger padding for better usability */
-    border-radius: 5px; /* Rounded corners */
-    border: 1px solid #ddd;
-    font-size: 14px; /* Slightly larger font size */
-    outline: none; /* Remove default outline */
-    transition: border-color 0.3s ease; /* Smooth transition for focus */
+.search-bar {
+    max-width: 1400px;
+    margin: 15px auto 0;
+    padding: 0 20px;
 }
 
-    .search-bar input:focus {
-        border-color: #9cc646; /* Highlight search bar when focused */
+    .search-bar input {
+        width: 100%;
+        padding: 10px;
+        border: 2px solid #78982E;
+        border-radius: 25px;
+        font-family: 'Segoe UI', sans-serif;
     }
 
 .container {
-    padding: 20px; /* Add padding to the container for better spacing */
+    margin: 2rem auto;
+    max-width: 1400px;
+    padding: 0 20px;
 }
 
 .items {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px; /* Consistent gap between items */
-    justify-content: center; /* Center items for better alignment */
-    margin-top: 20px; /* Reduced top margin */
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    padding: 1rem 0;
 }
 
 .item {
-    flex: 1 1 calc(33.33% - 20px); /* Adjusted for new gap */
-    max-width: calc(33.33% - 20px); /* Adjusted for new gap */
-    background-color: #fff; /* White background for each item */
-    border-radius: 8px; /* Rounded corners */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
-    padding: 15px; /* Padding inside each item */
-    text-align: center; /* Center align content */
-    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth hover effect */
+    background: #fff;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
 }
 
     .item:hover {
-        transform: translateY(-5px); /* Slight lift on hover */
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Enhanced shadow on hover */
+        transform: translateY(-5px);
+        box-shadow: 0 6px 20px rgba(0,0,0,0.12);
     }
 
-.productImage img {
-    max-width: 100%; /* Ensure image fits within the container */
-    height: auto;
-    border-radius: 8px; /* Rounded corners for images */
+.productImage {
+    width: 100%;
+    height: 200px;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 1rem;
 }
 
+    .productImage img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+    }
+
+    .productImage:hover img {
+        transform: scale(1.05);
+    }
+
 .productName h4 {
-    margin: 10px 0; /* Spacing around product name */
-    font-size: 18px; /* Slightly larger font size */
-    color: #333; /* Darker text for better readability */
+    color: #78982E;
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+    text-align: center;
 }
 
 .productPrice h5 {
-    margin: 5px 0; /* Spacing around price */
-    font-size: 16px; /* Slightly larger font size */
-    color: #9cc646; /* Use theme color for price */
-    font-weight: bold; /* Make price stand out */
+    color: #2c9c8a;
+    font-size: 1.4rem;
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+
+.buy-button {
+    background: linear-gradient(135deg, #2c9c8a, #78982E);
+    color: white;
+    padding: 0.8rem 2rem;
+    border-radius: 25px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    width: fit-content;
+    border: none;
+    cursor: pointer;
+}
+
+    .buy-button:hover {
+        opacity: 0.9;
+        box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+        transform: translateY(-2px);
+    }
+
+@media (max-width: 1024px) 
+{
+    .top-nav ul {
+        gap: 1rem;
+        justify-content: center;
+    }
+
+    .search-bar {
+        padding: 0 10px;
+    }
+
+    .items {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .items {
+        grid-template-columns: repeat(1, 1fr);
+    }
+
+    .productImage {
+        height: 180px;
+    }
+}
+
+@media (max-width: 480px) 
+{
+    .top-nav ul {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .search-bar 
+    {
+        display: none;
+    }
+
+    .items {
+        grid-template-columns: 1fr;
+    }
+
+    .productName h4 {
+        font-size: 1.1rem;
+    }
+
+    .productPrice h5 {
+        font-size: 1.3rem;
+    }
+
+    .container {
+        padding: 0 10px;
+    }
 }

@@ -7,8 +7,6 @@
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 <link rel="stylesheet" href="~/css/Shop.css" />
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="js/addtocart.js"></script>
 
 <div class="header">
 	<div class="top-nav">
@@ -46,7 +44,7 @@
 				</div>
 				<div class="productName"><h4>@product.Name</h4></div>
 				<div class="productPrice"><h5>@product.Price</h5></div>
-				<a asp-controller="Cart" asp-action="AddToCart" asp-route-productId="@product.ProductId">Купи</a>
+				<a class="buy-button" asp-controller="Cart" asp-action="AddToCart" asp-route-productId="@product.ProductId">Купи</a>
 			</div>
 		}
 
