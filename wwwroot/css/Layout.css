@@ -4,7 +4,8 @@
     box-sizing: border-box;
 }
 
-:root {
+:root 
+{
     --primary-color: #78982E;
     --secondary-color: #2c9c8a;
     --accent-color: #f5a623;
@@ -13,10 +14,10 @@
 }
 
 body {
-    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    font-family: system-ui, -apple-system, sans-serif;
     color: var(--text-color);
     line-height: 1.6;
-    background: linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.9)), url("~/images/background.jpg");
+    background: linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.9)), url("../images/background.jpg");
     background-size: cover;
     background-attachment: fixed;
     min-height: 100vh;
@@ -87,6 +88,22 @@ body {
     padding: 0 2rem;
     position: relative;
 }
+
+.video-container {
+    position: relative;
+    padding-bottom: 56.25%;
+    height: 0;
+    overflow: hidden;
+    max-width: 100%;
+}
+
+    .video-container iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
 
 .sidebar {
 
@@ -206,10 +223,12 @@ h3 {
     .sidebar {
         width: 100%;
         margin-right: 0;
+        order: 3;
     }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 768px) 
+{
     .header {
         flex-direction: column;
         gap: 1rem;
@@ -228,9 +247,15 @@ h3 {
         flex-wrap: wrap;
         justify-content: center;
     }
+
+    .sidebar {
+        padding: 1rem;
+        order: 3;
+    }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 480px) 
+{
     .main-content {
         padding: 1rem;
     }
@@ -241,5 +266,6 @@ h3 {
 
     .sidebar {
         padding: 1rem;
+        order: 3;
     }
 }
