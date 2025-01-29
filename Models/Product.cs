@@ -5,8 +5,7 @@ namespace Holistica.Models
 {
     public class Product
     {
-        [Key]
-        public Guid ProductId { get; set; }
+        [Key] public Guid ProductId { get; set; } = Guid.NewGuid();
 
         [Required(ErrorMessage = "Product name is required.")]
         [StringLength(100, ErrorMessage = "Product name shouldn't exceed 100 characters")]

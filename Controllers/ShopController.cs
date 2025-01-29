@@ -40,6 +40,23 @@ namespace Holistica.Controllers
             return PartialView();
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddProduct(Product product)
+        {
+           
+
+            if (ModelState.IsValid)
+            {
+                _context.Products.Add(product);
+                await _context.SaveChangesAsync();
+
+                return RedirectToAction("Index", "Shop");
+            }
+
+            return View(product);
+        }
+
         public ActionResult AddQuantity()
         {
             return PartialView();
