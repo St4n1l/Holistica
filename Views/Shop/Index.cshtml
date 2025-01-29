@@ -6,6 +6,12 @@
 
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
+<script>
+	const searchUrl = '@Url.Action("Search", "Shop")';
+	console.log(searchUrl);
+</script>
+<script src="js/searchbar.js"></script>
+	
 <link rel="stylesheet" href="~/css/Shop.css" />
 
 <div class="header">
@@ -26,7 +32,11 @@
 		</ul>
 	</div>
 	<div class="search-bar">
-		<input type="text" placeholder="Търсене..." />
+		<form id="searchFrom" asp-action="Search" asp-controller="Shop" method="post">
+			@Html.AntiForgeryToken()
+			<input type="text" name="searchInput" placeholder="Търсене..." />
+		</form>
+
 	</div>
 </div>
 

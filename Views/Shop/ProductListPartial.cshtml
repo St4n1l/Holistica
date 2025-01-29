@@ -1,0 +1,15 @@
+﻿@model List<Holistica.Models.Product>
+
+@foreach (var product in Model)
+{
+    <div class="item">
+        <div class="productImage">
+            <a href="@Url.Action("Details", "Shop", new { id = product.ProductId })">
+                <img src="@Url.Content($"~/images/shop images/{product.ImageUrl}")">
+            </a>
+        </div>
+        <div class="productName"><h4>@product.Name</h4></div>
+        <div class="productPrice"><h5>@product.Price</h5></div>
+        <a class="buy-button" asp-controller="Cart" asp-action="AddToCart" asp-route-productId="@product.ProductId">Купи</a>
+    </div>
+}

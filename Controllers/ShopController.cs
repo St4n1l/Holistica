@@ -44,5 +44,26 @@ namespace Holistica.Controllers
         {
             return PartialView();
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Search(string input)
+        {
+            List<Product> products;
+
+            if (string.IsNullOrWhiteSpace(input))
+            {
+                products = await _context.Products.ToListAsync();
+            }
+            else
+            {
+                products = await _context.Products
+                    .Where(p => p.Name.Contains(input))
+                    .ToListAsync();
+            }
+
+            return PartialView("ProductListPartial", products);
+        }
     }
+    
 }
