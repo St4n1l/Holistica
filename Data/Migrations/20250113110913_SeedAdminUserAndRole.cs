@@ -4,10 +4,8 @@
 
 namespace Holistica.Data.Migrations
 {
-    /// <inheritdoc />
     public partial class SeedAdminUserAndRole : Migration
     {
-        /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AlterColumn<string>(
@@ -47,7 +45,6 @@ namespace Holistica.Data.Migrations
                 oldMaxLength: 128);
         }
 
-        /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AlterColumn<string>(

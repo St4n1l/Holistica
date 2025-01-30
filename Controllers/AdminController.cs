@@ -13,13 +13,11 @@ namespace Holistica.Controllers
             _signInManager = signInManager;
         }
 
-        // GET: /Admin/Login
         public IActionResult Login()
         {
             return PartialView();
         }
 
-        // POST: /Admin/Login
         [HttpPost]
         public async Task<IActionResult> Login(string username, string password)
         {
@@ -29,13 +27,11 @@ namespace Holistica.Controllers
                 return PartialView();
             }
 
-            // Attempt to sign in the user
             var result = await _signInManager.PasswordSignInAsync(username, password, isPersistent: false, lockoutOnFailure: false);
 
             if (result.Succeeded)
             {
-                // Redirect to the admin dashboard or home page
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "Shop");
             }
             else
             {
@@ -44,7 +40,6 @@ namespace Holistica.Controllers
             }
         }
 
-        // POST: /Admin/Logout
         [HttpPost]
         public async Task<IActionResult> Logout()
         {

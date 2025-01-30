@@ -11,7 +11,6 @@ public static class SessionExtension
         var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
         var userManager = serviceProvider.GetRequiredService<UserManager<IdentityUser>>();
 
-        // Seed roles
         string[] roleNames = ["Admin", "User"];
 
         foreach (var roleName in roleNames)
@@ -23,7 +22,6 @@ public static class SessionExtension
             }
         }
 
-        // Seed admin user
         var adminUser = new IdentityUser
         {
             UserName = "S74n1l",
@@ -31,7 +29,7 @@ public static class SessionExtension
             EmailConfirmed = true
         };
 
-        const string adminPassword = "BroImSuffering123@";
+        const string adminPassword = "Admin@123";
 
         var user = await userManager.FindByEmailAsync(adminUser.Email);
 
@@ -51,7 +49,6 @@ public static class SessionExtension
             }
         }
 
-        //Seed products
         await using var context =
             new ApplicationDbContext(serviceProvider.GetRequiredService<DbContextOptions<ApplicationDbContext>>());
 
