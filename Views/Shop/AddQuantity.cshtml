@@ -3,43 +3,19 @@
 }
 
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
-
+@model Product
 <link rel="stylesheet" href="~/css/Shop.css" />
 
-<div class="header">
-	<div class="top-nav">
-		<ul>
-			<li><a asp-controller="Home" asp-action="Index">Начало</a></li>
-			<li><a asp-controller="Navigation" asp-action="Homeopathy">За нас</a></li>
-			<li><a asp-controller="Navigation" asp-action="Homeopathy">Контакти</a></li>
-			<li><a asp-controller="Shop" asp-action="Index">Магазин</a></li>
-		</ul>
-	</div>
-	<div class="search-bar">
-		<input type="text" placeholder="Търсене..." />
-	</div>
-</div>
+<body>
+<div>
+	<form asp-action="AddQuantity" method="post">
 
-<div class="container">
-	<div class="items">
-		<div class="item1">
-			<div class="productImage"><img src="images/shop images/1.webp" /></div>
-			<div class="productName"><h4>Лекарство 1</h4></div>
-			<div class="productPrice"><h5>Цена</h5></div>
-			<div class="productButton"><a>Още...</a></div>
+		<div>
+			<input type="hidden" id="productId" name="productId" value="@Model.ProductId"/>
+			<label for="Quantity">What's the quantity?:</label>
+			<input type="text" id="Quantity" name="Quantity" required/>
 		</div>
-		<div class="item2">
-			<a href=""></a><div class="productImage"><img src="images/shop images/2.webp"/></div>
-			<div class="productName"><h4>Лекарство 1</h4></div>
-			<div class="productPrice"><h5>Цена</h5></div>
-			<div class="productButton"><a>Още...</a></div>
-		</div>
-		<div class="item3">
-			<div class="productImage"><img src="images/shop images/3.webp" /></div>
-			<div class="productName"><h4>Лекарство 1</h4></div>
-			<div class="productPrice"><h5>Цена</h5></div>
-			<div class="productButton"><a>Още...</a></div>
-		</div>
-	</div>
+			<button type="submit">Add Product</button>
+	</form>
 </div>
-
+</body>

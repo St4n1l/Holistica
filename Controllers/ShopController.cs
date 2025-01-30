@@ -57,8 +57,26 @@ namespace Holistica.Controllers
             return View(product);
         }
 
-        public ActionResult AddQuantity()
+        public async Task<IActionResult> AddQuantity(string productId)
         {
+            var neededProduct = await _context.Products.FindAsync(Guid.Parse(productId));
+            return PartialView(neededProduct);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddQuantity(string productId, int quantity)
+        {
+            var neededProduct = await _context.Products.FirstOrDefaultAsync(p => p.ProductId == Guid.Parse(productId));
+
+            if (neededProduct != null)
+            {
+                neededProduct.Quantity = quantity;
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Index", "Shop");
+
+            }
+
             return PartialView();
         }
 
