@@ -1,9 +1,12 @@
 using Holistica.Data;
+using Holistica.Extension;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddScoped<CartService>();
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddMemoryCache();
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
@@ -29,18 +32,26 @@ builder.Services.AddSession(options =>
 
 });
 
+var config = builder.Configuration;
+var stripePublishableKey = config["Stripe:PublishableKey"];
+var stripeSecretKey = config["Stripe:SecretKey"];
+builder.Services.Configure<StripeSettings>(config.GetSection("Stripe"));
+
+
 var app = builder.Build();
 app.UseSession();
 
 if (app.Environment.IsDevelopment())
 {
     app.UseMigrationsEndPoint();
+    builder.Configuration.AddUserSecrets<Program>();
 }
 else
 {
     app.UseExceptionHandler("/Home/Error");
     app.UseHsts();
 }
+
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();

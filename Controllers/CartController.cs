@@ -8,22 +8,20 @@ using Microsoft.AspNetCore.Mvc;
 
 public class CartController : Controller
 {
-    private const string CartSessionKey = "Cart";
-    private readonly ApplicationDbContext _context;
-
-    public CartController(ApplicationDbContext dbContext)
+    private readonly CartService _cartService;
+    public CartController(CartService cartService)
     {
-        _context = dbContext;
+        _cartService = cartService;
     }
 
     public IActionResult ViewCart()
     {
-        var cartView = HttpContext.Session.Get<List<CartItem>>(CartSessionKey) ?? new List<CartItem>();
+        var items = _cartService.GetCartItems();
 
         var cartViewModel = new CartItemViewModel()
         {
-            CartItems = cartView,
-            TotalPrice = cartView.Sum(item => item.Product.Price * item.Quantity)
+            CartItems = items,
+            TotalPrice = _cartService.GetTotalPrice()
         };
 
         return PartialView(cartViewModel);
@@ -31,27 +29,7 @@ public class CartController : Controller
 
     public IActionResult AddToCart(Guid productId)
     {
-        var productToAdd = _context.Products.Find(productId);
-
-        var cartItems = HttpContext.Session.Get<List<CartItem>>(CartSessionKey) ?? new List<CartItem>();
-
-        var cartItem = cartItems.FirstOrDefault(ci => ci.Product.ProductId == productId);
-
-        if (cartItem != null)
-        {
-            cartItem.Quantity++;
-        }
-        else
-        {
-            cartItems.Add(new CartItem
-            {
-                Product = productToAdd,
-                Quantity = 1
-            });
-        }
-
-        HttpContext.Session.Set(CartSessionKey, cartItems);
-
+        _cartService.AddToCart(productId);
         return RedirectToAction("ViewCart");
     }
 
