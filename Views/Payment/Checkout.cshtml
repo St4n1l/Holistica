@@ -1,0 +1,51 @@
+﻿@{
+	ViewBag.Title = "Checkout";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>@ViewBag.Title</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body class="bg-light">
+
+<div class="container">
+	<div class="py-5 text-center">
+		<h2>Checkout</h2>
+		<p class="lead">Click the button below to proceed with your payment using Stripe.</p>
+		<button type="button" id="checkout-button" class="btn btn-primary">Pay with Stripe</button>
+	</div>
+</div>
+
+<script src="https://js.stripe.com/v3/"></script>
+<script>
+    var stripe = Stripe('@ViewBag.PublishableKey');
+
+    var checkoutButton = document.getElementById('checkout-button');
+
+    checkoutButton.addEventListener('click', function () {
+        fetch('/payment/createcheckoutsession', {
+            method: 'POST',
+        })
+        .then(function (response) {
+            return response.json();
+        })
+        .then(function (sessionId) {
+            return stripe.redirectToCheckout({ sessionId: sessionId.id });
+        })
+        .then(function (result) {
+            if (result.error) {
+                alert(result.error.message);
+            }
+        })
+        .catch(function (error) {
+            console.error('Error:', error);
+        });
+    });
+</script>
+
+</body>
+</html>
