@@ -1,11 +1,14 @@
+using System.Globalization;
 using Holistica.Data;
 using Holistica.Extension;
+using Holistica.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddScoped<CartService>();
+builder.Services.AddScoped<ShopService>();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddMemoryCache();
 
@@ -36,6 +39,10 @@ var config = builder.Configuration;
 var stripePublishableKey = config["Stripe:PublishableKey"];
 var stripeSecretKey = config["Stripe:SecretKey"];
 builder.Services.Configure<StripeSettings>(config.GetSection("Stripe"));
+
+var cultureInfo = new CultureInfo("bg-BG");
+CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
+CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
 
 
 var app = builder.Build();

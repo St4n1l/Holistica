@@ -1,6 +1,8 @@
 using System.Diagnostics;
+using System.Globalization;
 using Holistica.Data;
 using Holistica.Models;
+using Holistica.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -9,27 +11,22 @@ namespace Holistica.Controllers
 {
     public class ShopController : Controller
     {
-        private readonly ApplicationDbContext _context;
-
-        public ShopController(ApplicationDbContext dbContext)
+        public readonly ShopService _shopService;
+        public ShopController(ShopService service)
         {
-            _context = dbContext;
+            _shopService = service;
         }
 
         public async Task<ActionResult> IndexAsync()
         {
-            var products = await _context.Products.ToListAsync();
+            var products = await _shopService.GetProducts();
             return PartialView(products);
         }
 
 
         public async Task<ActionResult> Details(Guid id)
         {
-            var product = await _context.Products.FindAsync(id);
-            if (product == null)
-            {
-                return NotFound();
-            }
+            var product = await _shopService.GetSpecificProduct(id);
 
             return PartialView(product);
         }
@@ -44,60 +41,64 @@ namespace Holistica.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddProduct(Product product)
         {
-           
-
-            if (ModelState.IsValid)
+            if(ModelState.IsValid)
             {
-                _context.Products.Add(product);
-                await _context.SaveChangesAsync();
-
-                return RedirectToAction("Index", "Shop");
+                await _shopService.AddProduct(product);
             }
 
-            return View(product);
+            return RedirectToAction("Index");
         }
 
-        public async Task<IActionResult> AddQuantity(string productId)
+        public async Task<IActionResult> ChangeQuantity(string productId)
         {
-            var neededProduct = await _context.Products.FindAsync(Guid.Parse(productId));
+            var neededProduct = await _shopService.GetSpecificProduct(Guid.Parse(productId));
             return PartialView(neededProduct);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddQuantity(string productId, int quantity)
+        public async Task<IActionResult> ChangeQuantity(string productId, int quantity)
         {
-            var neededProduct = await _context.Products.FirstOrDefaultAsync(p => p.ProductId == Guid.Parse(productId));
+            await _shopService.ChangeQuantity(productId, quantity);
 
-            if (neededProduct != null)
-            {
-                neededProduct.Quantity = quantity;
-                await _context.SaveChangesAsync();
-                return RedirectToAction("Index", "Shop");
-
-            }
-
-            return PartialView();
+            return RedirectToAction("Index");
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Search(string input)
         {
-            List<Product> products;
-
-            if (string.IsNullOrWhiteSpace(input))
-            {
-                products = await _context.Products.ToListAsync();
-            }
-            else
-            {
-                products = await _context.Products
-                    .Where(p => p.Name.Contains(input))
-                    .ToListAsync();
-            }
+            var products = await _shopService.Search(input);
 
             return PartialView("ProductListPartial", products);
+        }
+
+        public async Task<IActionResult> Remove(string productId)
+        {
+            await _shopService.Remove(productId);
+
+            return RedirectToAction("Index");
+        }
+
+        public async Task<IActionResult> Change(string productId)
+        {
+            var product = await _shopService.GetSpecificProduct(Guid.Parse(productId));
+            return PartialView(product);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Change(string productId, string description, string imageurl, string name, string price, int quantity)
+        {
+            price = price.Replace(",", ".");
+
+            if (!decimal.TryParse(price, NumberStyles.Any, CultureInfo.InvariantCulture, out decimal parsedPrice))
+            {
+                return BadRequest("Invalid price format.");
+            }
+
+            var product = await _shopService.ChangeProduct(productId, name, description, parsedPrice, quantity, imageurl);
+            return RedirectToAction("Index");
         }
     }
     

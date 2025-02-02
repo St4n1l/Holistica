@@ -1,14 +1,10 @@
-﻿@{
-    ViewData["Title"] = "Homeopathy";
-}
-
-@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @model Product
 <link rel="stylesheet" href="~/css/Shop.css" />
 
 <body>
 <div>
-	<form asp-action="AddQuantity" method="post">
+	<form asp-action="ChangeQuantity" method="post">
 
 		<div>
 			<input type="hidden" id="productId" name="productId" value="@Model.ProductId"/>
