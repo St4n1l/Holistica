@@ -33,7 +33,7 @@ public class PaymentController : Controller
         {
             PriceData = new SessionLineItemPriceDataOptions
             {
-                UnitAmount = (long)(_cartService.GetTotalPrice() * 100),
+                UnitAmount = (long)(ci.Product.Price * 100),
                 Currency = "bgn",
                 ProductData = new SessionLineItemPriceDataProductDataOptions
                 {
