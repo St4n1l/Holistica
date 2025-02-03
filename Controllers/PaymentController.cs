@@ -1,4 +1,5 @@
 ﻿using Holistica.Extension;
+using Holistica.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Stripe;
@@ -6,11 +7,12 @@ using Stripe.Checkout;
 public class PaymentController : Controller
 {
     private readonly StripeSettings _stripeSettings;
-
-    public PaymentController(IOptions<StripeSettings> stripeSettings)
+    private readonly CartService _cartService;
+    public PaymentController(IOptions<StripeSettings> stripeSettings, CartService cartService)
     {
         _stripeSettings = stripeSettings.Value;
-        Console.WriteLine($"Loaded Stripe Secret Key: {_stripeSettings.SecretKey}"); // Debugging
+        _cartService = cartService;
+        Console.WriteLine($"Loaded Stripe Secret Key: {_stripeSettings.SecretKey}");
         StripeConfiguration.ApiKey = _stripeSettings.SecretKey;
 
     }
@@ -25,25 +27,27 @@ public class PaymentController : Controller
     [HttpPost]
     public async Task<IActionResult> CreateCheckoutSession()
     {
+        var cartItems = _cartService.GetCartItems();
+
+        var lineItems = cartItems.Select(ci => new SessionLineItemOptions
+        {
+            PriceData = new SessionLineItemPriceDataOptions
+            {
+                UnitAmount = (long)(_cartService.GetTotalPrice() * 100),
+                Currency = "bgn",
+                ProductData = new SessionLineItemPriceDataProductDataOptions
+                {
+                    Name = ci.Product.Name,
+                },
+            },
+            Quantity = ci.Quantity,
+
+        }).ToList();
+
         var options = new SessionCreateOptions
         {
             PaymentMethodTypes = new List<string> { "card" },
-            LineItems = new List<SessionLineItemOptions>
-            {
-                new SessionLineItemOptions
-                {
-                    PriceData = new SessionLineItemPriceDataOptions
-                    {
-                        UnitAmount = 2000,
-                        Currency = "bgn",
-                        ProductData = new SessionLineItemPriceDataProductDataOptions
-                        {
-                            Name = "Test Product",
-                        },
-                    },
-                    Quantity = 1,
-                },
-            },
+            LineItems = lineItems,
             Mode = "payment",
             SuccessUrl = $"{Request.Scheme}://{Request.Host}/Payment/Success",
             CancelUrl = $"{Request.Scheme}://{Request.Host}/Payment/Cancel",
