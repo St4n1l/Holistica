@@ -23,10 +23,11 @@ namespace Holistica.Controllers
             return PartialView(products);
         }
 
-
-        public async Task<ActionResult> Details(Guid id)
+        [HttpPost]
+        [Route("Shop/Details/")]
+        public async Task<ActionResult> Details(string productId)
         {
-            var product = await _shopService.GetSpecificProduct(id);
+            var product = await _shopService.GetSpecificProduct(Guid.Parse(productId));
 
             return PartialView(product);
         }

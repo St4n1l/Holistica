@@ -1,9 +1,14 @@
-﻿using Holistica.Extension;
+﻿using System.Net.Mail;
+using Holistica.Extension;
 using Holistica.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using MimeKit;
 using Stripe;
 using Stripe.Checkout;
+using MailKit.Net.Smtp;
+using MailKit.Security;
+using SmtpClient = MailKit.Net.Smtp.SmtpClient;
 public class PaymentController : Controller
 {
     private readonly StripeSettings _stripeSettings;
@@ -21,6 +26,7 @@ public class PaymentController : Controller
     public IActionResult Checkout()
     {
         ViewBag.PublishableKey = _stripeSettings.PublishableKey;
+
         return PartialView();
     }
 
@@ -68,11 +74,38 @@ public class PaymentController : Controller
 
     public IActionResult Success()
     {
+        SendEmail();
         return PartialView();
     }
 
     public IActionResult Cancel()
     {
         return PartialView();
+    }
+
+    [Route("Payment/")]
+    public IActionResult GatherInfo()
+    {
+        return PartialView();
+    }
+
+    public static void SendEmail()
+    {
+        var email = new MimeMessage();
+        email.From.Add(new MailboxAddress("Your Name", "your-email@gmail.com"));
+        email.To.Add(new MailboxAddress("Recipient Name", "recipient-email@example.com"));
+        email.Subject = "Subject of the Email";
+        email.Body = new TextPart("plain")
+        {
+            Text = "This is the body of the email."
+        };
+
+        using (var smtp = new SmtpClient())
+        {
+            smtp.Connect("smtp.gmail.com", 587, SecureSocketOptions.StartTls);
+            smtp.Authenticate("your-email@gmail.com", "your-email-password");
+            smtp.Send(email);
+            smtp.Disconnect(true);
+        }
     }
 }

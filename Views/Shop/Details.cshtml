@@ -1,45 +1,25 @@
 ﻿@{
-    ViewData["Title"] = "Homeopathy";
+	ViewData["Title"] = "Homeopathy";
 }
-
+@model Product
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
-<link rel="stylesheet" href="~/css/Shop.css" />
+<link rel="stylesheet" href="~/css/Details.css" />
 
 <div class="header">
 	<div class="top-nav">
 		<ul>
-			<li><a asp-controller="Home" asp-action="Index">Начало</a></li>
-			<li><a asp-controller="Navigation" asp-action="Homeopathy">За нас</a></li>
-			<li><a asp-controller="Navigation" asp-action="Homeopathy">Контакти</a></li>
-			<li><a asp-controller="Shop" asp-action="Index">Магазин</a></li>
+			<li><a asp-controller="Shop" asp-action="Index">Назад</a></li>
 		</ul>
-	</div>
-	<div class="search-bar">
-		<input type="text" placeholder="Търсене..." />
 	</div>
 </div>
 
 <div class="container">
-	<div class="items">
-		<div class="item1">
-			<div class="productImage"><img src="images/shop images/1.webp" /></div>
-			<div class="productName"><h4>Лекарство 1</h4></div>
-			<div class="productPrice"><h5>Цена</h5></div>
-			<div class="productButton"><a>Още...</a></div>
-		</div>
-		<div class="item2">
-			<a href=""></a><div class="productImage"><img src="images/shop images/2.webp"/></div>
-			<div class="productName"><h4>Лекарство 1</h4></div>
-			<div class="productPrice"><h5>Цена</h5></div>
-			<div class="productButton"><a>Още...</a></div>
-		</div>
-		<div class="item3">
-			<div class="productImage"><img src="images/shop images/3.webp" /></div>
-			<div class="productName"><h4>Лекарство 1</h4></div>
-			<div class="productPrice"><h5>Цена</h5></div>
-			<div class="productButton"><a>Още...</a></div>
-		</div>
+	<div class="item">
+		<img src="~/images/shop images/@Model.ImageUrl" alt="@Model.Name" />
+		<h3>@Model.Name</h3>
+		<h5>@Model.Price</h5>
+		<h4>@Model.Description</h4>
+		<a class="btn-primary" href="#">Add to Cart</a>
 	</div>
 </div>
-

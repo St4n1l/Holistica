@@ -121,4 +121,30 @@ public class CartService
 
         Session.Set(CartSessionKey, cartItems);
     }
+
+    public void ChangeQuantity(Guid productId, int adjustment)
+    {
+        var cartItems = GetCartItems();
+        var cartItem = cartItems.FirstOrDefault(ci => ci.ProductId == productId);
+
+        if (cartItem != null)
+        {
+            cartItem.Quantity += adjustment;
+        }
+
+        Session.Set(CartSessionKey, cartItems);
+    }
+
+    public void Remove(Guid productId)
+    {
+        var cartItems = GetCartItems();
+        var cartItem = cartItems.FirstOrDefault(ci => ci.ProductId == productId);
+
+        if (cartItem != null)
+        {
+            cartItems.Remove(cartItem);
+        }
+
+        Session.Set(CartSessionKey, cartItems);
+    }
 }

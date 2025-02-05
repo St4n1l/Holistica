@@ -28,4 +28,16 @@ public class CartController : Controller
         await _cartService.AddToCartAsync(productId);
         return RedirectToAction("ViewCart");
     }
+
+    public IActionResult ChangeQuantity(string productId, int adjustment)
+    {
+        _cartService.ChangeQuantity(Guid.Parse(productId), adjustment);
+        return RedirectToAction("ViewCart");
+    }
+
+    public IActionResult Remove(string productId)
+    {
+        _cartService.Remove(Guid.Parse(productId));
+        return RedirectToAction("ViewCart");
+    }
 }
