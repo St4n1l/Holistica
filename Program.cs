@@ -38,7 +38,10 @@ builder.Services.AddSession(options =>
 var config = builder.Configuration;
 var stripePublishableKey = config["Stripe:PublishableKey"];
 var stripeSecretKey = config["Stripe:SecretKey"];
+var emailUsername = config["AppKey:Email"];
+var emailPassword = config["AppKey:EmailPassword"];
 builder.Services.Configure<StripeSettings>(config.GetSection("Stripe"));
+builder.Services.Configure<GmailSettings>(config.GetSection("AppKey"));
 
 var cultureInfo = new CultureInfo("bg-BG");
 CultureInfo.DefaultThreadCurrentCulture = cultureInfo;

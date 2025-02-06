@@ -13,12 +13,13 @@ public class PaymentController : Controller
 {
     private readonly StripeSettings _stripeSettings;
     private readonly CartService _cartService;
-    public PaymentController(IOptions<StripeSettings> stripeSettings, CartService cartService)
+    private readonly GmailSettings _gmailSettings;
+    public PaymentController(IOptions<StripeSettings> stripeSettings, CartService cartService, IOptions<GmailSettings> gmailSettings)
     {
         _stripeSettings = stripeSettings.Value;
         _cartService = cartService;
-        Console.WriteLine($"Loaded Stripe Secret Key: {_stripeSettings.SecretKey}");
         StripeConfiguration.ApiKey = _stripeSettings.SecretKey;
+        _gmailSettings = gmailSettings.Value;
 
     }
 
@@ -89,11 +90,11 @@ public class PaymentController : Controller
         return PartialView();
     }
 
-    public static void SendEmail()
+    public IActionResult SendEmail()
     {
         var email = new MimeMessage();
-        email.From.Add(new MailboxAddress("Your Name", "your-email@gmail.com"));
-        email.To.Add(new MailboxAddress("Recipient Name", "recipient-email@example.com"));
+        email.From.Add(new MailboxAddress("Your Name", _gmailSettings.Email));
+        email.To.Add(new MailboxAddress("Recipient Name", _gmailSettings.Email));
         email.Subject = "Subject of the Email";
         email.Body = new TextPart("plain")
         {
@@ -103,9 +104,11 @@ public class PaymentController : Controller
         using (var smtp = new SmtpClient())
         {
             smtp.Connect("smtp.gmail.com", 587, SecureSocketOptions.StartTls);
-            smtp.Authenticate("your-email@gmail.com", "your-email-password");
+            smtp.Authenticate(_gmailSettings.Email, _gmailSettings.EmailPassword);
             smtp.Send(email);
             smtp.Disconnect(true);
         }
+
+        return RedirectToAction("Index", "Shop");
     }
 }
