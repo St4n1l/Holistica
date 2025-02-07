@@ -1,80 +1,96 @@
-﻿<!DOCTYPE html>
+﻿@model Holistica.Models.ViewModels.CheckOutViewModel
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Checkout Form</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-        }
-        .container {
-            max-width: 500px;
-            margin: 0 auto;
-            padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        .form-group {
-            margin-bottom: 15px;
-        }
-        label {
-            display: block;
-            margin-bottom: 5px;
-        }
-        input[type="text"],
-        input[type="email"],
-        input[type="tel"],
-        textarea {
-            width: 100%;
-            padding: 8px;
-            box-sizing: border-box;
-        }
-        .payment-options {
-            margin-bottom: 15px;
-        }
-        .payment-options label {
-            display: inline-block;
-            margin-right: 10px;
-        }
-        .submit-btn {
-            background-color: #4CAF50;
-            color: white;
-            padding: 10px 15px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .submit-btn:hover {
-            background-color: #45a049;
-        }
-    </style>
+	<meta charset="UTF-8">
+	<title>Checkout Form</title>
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+		}
+
+		.container {
+			max-width: 500px;
+			margin: 0 auto;
+			padding: 20px;
+			border: 1px solid #ccc;
+			border-radius: 5px;
+		}
+
+		.form-group {
+			margin-bottom: 15px;
+		}
+
+		label {
+			display: block;
+			margin-bottom: 5px;
+		}
+
+		input[type="text"],
+		input[type="email"],
+		input[type="tel"],
+		textarea {
+			width: 100%;
+			padding: 8px;
+			box-sizing: border-box;
+		}
+
+		.payment-options {
+			margin-bottom: 15px;
+		}
+
+			.payment-options label {
+				display: inline-block;
+				margin-right: 10px;
+			}
+
+		.submit-btn {
+			background-color: #4CAF50;
+			color: white;
+			padding: 10px 15px;
+			border: none;
+			border-radius: 5px;
+			cursor: pointer;
+		}
+
+			.submit-btn:hover {
+				background-color: #45a049;
+			}
+	</style>
 </head>
 <body>
-    <div class="container">
-        <h2>Checkout Form</h2>
-        <form action="process_order.php" method="post">
-            <div class="form-group">
-                <label for="name">Full Name:</label>
-                <input type="text" id="name" name="name" required>
-            </div>
-            <div class="form-group">
-                <label for="email">Email Address:</label>
-                <input type="email" id="email" name="email" required>
-            </div>
-            <div class="form-group">
-                <label for="phone">Phone Number:</label>
-                <input type="tel" id="phone" name="phone" required>
-            </div>
-            <div class="form-group">
-                <label for="address">Shipping Address:</label>
-                <textarea id="address" name="address" rows="4" required></textarea>
-            </div>
-            <div class="payment-options">
-	            <label><a asp-controller="Payment" asp-action="Checkout" type="radio" name="payment_method" value="card" required> Pay with Card</a></label>
-                <label><a asp-controller="Payment" asp-action="SendEmail" type="radio" name="payment_method" value="cod"> Pay on Delivery</a></label>
-            </div>
-            <button type="submit" class="submit-btn">Place Order</button>
-        </form>
-    </div>
+<div class="container">
+	<h2>Checkout Form</h2>
+	<form asp-action="ProcessCheckout" asp-controller="Payment" method="post">
+		<div class="form-group">
+			<label for="Name">Full Name:</label>
+			<input type="text" id="Name" name="Name" required />
+		</div>
+		<div class="form-group">
+			<label for="Email">Email Address:</label>
+			<input type="email" id="Email" name="Email" required />
+		</div>
+		<div class="form-group">
+			<label for="Phone">Phone Number:</label>
+			<input type="tel" id="Phone" name="Phone" required />
+		</div>
+		<div class="form-group">
+			<label for="Address">Shipping Address:</label>
+			<textarea id="Address" name="Address" rows="4" required></textarea>
+		</div>
+		<div class="payment-options">
+			<label>
+				<input type="radio" name="PaymentMethod" value="card" required />
+				Pay with Card
+			</label>
+			<label>
+				<input type="radio" name="PaymentMethod" value="cod" />
+				Pay on Delivery
+			</label>
+		</div>
+		<button type="submit" class="submit-btn">Place Order</button>
+	</form>
+</div>
 </body>
 </html>

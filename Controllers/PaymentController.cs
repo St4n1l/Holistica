@@ -9,6 +9,7 @@ using Stripe.Checkout;
 using MailKit.Net.Smtp;
 using MailKit.Security;
 using SmtpClient = MailKit.Net.Smtp.SmtpClient;
+using Holistica.Models.ViewModels;
 public class PaymentController : Controller
 {
     private readonly StripeSettings _stripeSettings;
@@ -75,7 +76,6 @@ public class PaymentController : Controller
 
     public IActionResult Success()
     {
-        SendEmail();
         return PartialView();
     }
 
@@ -85,21 +85,80 @@ public class PaymentController : Controller
     }
 
     [Route("Payment/")]
-    public IActionResult GatherInfo()
+    public IActionResult GatherInfo(string customerEmail, string customerName, string customerAddress, string customerPhone)
     {
         return PartialView();
     }
 
-    public IActionResult SendEmail()
+
+    [HttpPost]
+    public IActionResult ProcessCheckout(CheckOutViewModel model)
     {
+        if (ModelState.IsValid)
+        {
+            HttpContext.Session.SetString("CustomerEmail", model.Email);
+            HttpContext.Session.SetString("CustomerName", model.Name);
+            HttpContext.Session.SetString("CustomerPhone", model.Phone);
+            HttpContext.Session.SetString("CustomerAddress", model.Address);
+
+            string paymentMethod = model.PaymentMethod;
+
+            if (paymentMethod == "card")
+            {
+                return RedirectToAction("CreateCheckoutSession");
+            }
+            else if (paymentMethod == "cod")
+            {
+                SendEmailToCustomer(model.Email, model.Name);
+                SendEmailToMe(model.Name,model.Address,model.Phone);
+                return RedirectToAction("Success");
+            }
+        }
+
+        return RedirectToAction("Index", "Shop");
+    }
+
+
+
+    public void SendEmailToMe(string name, string address, string phone)
+    {
+        var items = String.Join(", ", _cartService.GetCartItems());
+        var text = $"New order from {name} with the following items: {items}\n" +
+                   $"Phone: {HttpContext.Session.GetString("CustomerPhone")}\n" +
+                   $"Name: {HttpContext.Session.GetString("CustomerName")}\n" +
+                   $"Address: { HttpContext.Session.GetString("CustomerAddress")}";
+
         var email = new MimeMessage();
-        email.From.Add(new MailboxAddress("Your Name", _gmailSettings.Email));
-        email.To.Add(new MailboxAddress("Recipient Name", _gmailSettings.Email));
-        email.Subject = "Subject of the Email";
+        email.From.Add(new MailboxAddress("Holistica", _gmailSettings.Email));
+        email.To.Add(new MailboxAddress("Me", _gmailSettings.Email));
+        email.Subject = "New Order";
         email.Body = new TextPart("plain")
         {
-            Text = "This is the body of the email."
+            Text = text
         };
+
+
+        using (var smtp = new SmtpClient())
+        {
+            smtp.Connect("smtp.gmail.com", 587, SecureSocketOptions.StartTls);
+            smtp.Authenticate(_gmailSettings.Email, _gmailSettings.EmailPassword);
+            smtp.Send(email);
+            smtp.Disconnect(true);
+        }
+        
+    }
+
+    public void SendEmailToCustomer(string customerEmail, string recipientName)
+    {
+        var email = new MimeMessage();
+        email.From.Add(new MailboxAddress("Holistica", _gmailSettings.Email));
+        email.To.Add(new MailboxAddress(recipientName, customerEmail));
+        email.Subject = "Order confirmation";
+        email.Body = new TextPart("plain")
+        {
+            Text = "Your order has been successfully places. Thank you for shopping at Holistica!"
+        };
+
 
         using (var smtp = new SmtpClient())
         {
@@ -109,6 +168,5 @@ public class PaymentController : Controller
             smtp.Disconnect(true);
         }
 
-        return RedirectToAction("Index", "Shop");
     }
 }
