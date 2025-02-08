@@ -1,0 +1,21 @@
+﻿@{
+	Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>Redirecting...</title>
+	<script>
+        window.onload = function () {
+            document.getElementById('postForm').submit();
+        };
+    </script>
+</head>
+<body>
+<form id="postForm" action="@Url.Action("CreateCheckoutSession", "Payment")" method="post">
+	@* If needed, add hidden fields here to pass additional data *@
+</form>
+<p>Redirecting to payment page...</p>
+</body>
+</html>

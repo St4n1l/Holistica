@@ -49,7 +49,6 @@ public class PaymentController : Controller
                 },
             },
             Quantity = ci.Quantity,
-
         }).ToList();
 
         var options = new SessionCreateOptions
@@ -57,22 +56,22 @@ public class PaymentController : Controller
             PaymentMethodTypes = new List<string> { "card" },
             LineItems = lineItems,
             Mode = "payment",
-            SuccessUrl = $"{Request.Scheme}://{Request.Host}/Payment/Success",
+            SuccessUrl = $"{Request.Scheme}://{Request.Host}/Payment/Success?session_id={{CHECKOUT_SESSION_ID}}",
             CancelUrl = $"{Request.Scheme}://{Request.Host}/Payment/Cancel",
-
         };
 
         try
         {
             var service = new SessionService();
             Session session = await service.CreateAsync(options);
-            return Json(new { id = session.Id });
+            return Redirect(session.Url);
         }
         catch (StripeException e)
         {
             return BadRequest(new { error = e.Message });
         }
     }
+
 
     public IActionResult Success()
     {
@@ -85,7 +84,7 @@ public class PaymentController : Controller
     }
 
     [Route("Payment/")]
-    public IActionResult GatherInfo(string customerEmail, string customerName, string customerAddress, string customerPhone)
+    public IActionResult GatherInfo()
     {
         return PartialView();
     }
@@ -100,33 +99,41 @@ public class PaymentController : Controller
             HttpContext.Session.SetString("CustomerName", model.Name);
             HttpContext.Session.SetString("CustomerPhone", model.Phone);
             HttpContext.Session.SetString("CustomerAddress", model.Address);
-
-            string paymentMethod = model.PaymentMethod;
-
-            if (paymentMethod == "card")
-            {
-                return RedirectToAction("CreateCheckoutSession");
-            }
-            else if (paymentMethod == "cod")
-            {
-                SendEmailToCustomer(model.Email, model.Name);
-                SendEmailToMe(model.Name,model.Address,model.Phone);
-                return RedirectToAction("Success");
-            }
+            HttpContext.Session.SetString("PaymentMethod", model.PaymentMethod);
         }
+
+        if (model.PaymentMethod == "card")
+        {
+            // Instead of redirecting (which causes a GET), return a view that auto-posts to CreateCheckoutSession
+            return View("ProcessData");
+        }
+
+        // For cash (cod) orders, send emails and redirect appropriately
+        return RedirectToAction("OnDelivery");
+    }
+
+
+
+
+
+    public IActionResult OnDelivery()
+    {
+        SendEmailToMe(HttpContext.Session.GetString("PaymentMethod"));
+        SendEmailToCustomer();
 
         return RedirectToAction("Index", "Shop");
     }
 
 
 
-    public void SendEmailToMe(string name, string address, string phone)
+    public void SendEmailToMe(string paymentMethod)
     {
         var items = String.Join(", ", _cartService.GetCartItems());
-        var text = $"New order from {name} with the following items: {items}\n" +
+        var text = $"New order from {HttpContext.Session.GetString("CustomerName")} with the following items: {items}\n" +
                    $"Phone: {HttpContext.Session.GetString("CustomerPhone")}\n" +
                    $"Name: {HttpContext.Session.GetString("CustomerName")}\n" +
-                   $"Address: { HttpContext.Session.GetString("CustomerAddress")}";
+                   $"Address: { HttpContext.Session.GetString("CustomerAddress")}\n" +
+                   $"Payment: {paymentMethod}";
 
         var email = new MimeMessage();
         email.From.Add(new MailboxAddress("Holistica", _gmailSettings.Email));
@@ -148,11 +155,11 @@ public class PaymentController : Controller
         
     }
 
-    public void SendEmailToCustomer(string customerEmail, string recipientName)
+    public void SendEmailToCustomer()
     {
         var email = new MimeMessage();
         email.From.Add(new MailboxAddress("Holistica", _gmailSettings.Email));
-        email.To.Add(new MailboxAddress(recipientName, customerEmail));
+        email.To.Add(new MailboxAddress(HttpContext.Session.GetString("CustomerName"), HttpContext.Session.GetString("CustomerEmail")));
         email.Subject = "Order confirmation";
         email.Body = new TextPart("plain")
         {

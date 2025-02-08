@@ -21,31 +21,39 @@
 </div>
 
 <script src="https://js.stripe.com/v3/"></script>
-<script>
-    var stripe = Stripe('@ViewBag.PublishableKey');
+    <script>
+        var stripe = Stripe('@ViewBag.PublishableKey');
 
-    var checkoutButton = document.getElementById('checkout-button');
+        var checkoutButton = document.getElementById('checkout-button');
 
-    checkoutButton.addEventListener('click', function () {
-        fetch('/payment/createcheckoutsession', {
-            method: 'POST',
-        })
-        .then(function (response) {
-            return response.json();
-        })
-        .then(function (sessionId) {
-            return stripe.redirectToCheckout({ sessionId: sessionId.id });
-        })
-        .then(function (result) {
-            if (result.error) {
-                alert(result.error.message);
-            }
-        })
-        .catch(function (error) {
-            console.error('Error:', error);
+        checkoutButton.addEventListener('click', function () {
+            var form = document.querySelector('form');
+            var formData = new FormData(form);
+
+            fetch('/payment/processcheckout', {
+                method: 'POST',
+                body: formData // Send form data to the server
+            })
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (data) {
+                // Check if sessionId is returned
+                if (data.sessionId) {
+                    return stripe.redirectToCheckout({ sessionId: data.sessionId });
+                }
+            })
+            .then(function (result) {
+                if (result.error) {
+                    alert(result.error.message);
+                }
+            })
+            .catch(function (error) {
+                console.error('Error:', error);
+            });
         });
-    });
-</script>
+    </script>
+
 
 </body>
 </html>
