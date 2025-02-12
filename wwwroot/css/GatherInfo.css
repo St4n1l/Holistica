@@ -1,2 +1,139 @@
 ﻿body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    color: black;
+    background: linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.9)), url("../images/background.jpg");
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    padding: 1rem;
+    line-height: 1.5;
+}
+
+.container {
+    width: 100%;
+    max-width: 600px;
+    background: white;
+    padding: 2.5rem;
+    border-radius: 1.5rem;
+    color: dimgray;
+}
+
+.form-header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+}
+
+.form-title {
+    font-size: 1.875rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: black;
+}
+
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+label {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    color: #374151;
+}
+
+.modern-input {
+    width: 100%;
+    padding: 0.875rem;
+    border: 2px solid gray;
+    border-radius: 0.75rem;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+    background: white;
+}
+
+    .modern-input:focus {
+        outline: none;
+        border-color: gray;
+        box-shadow: gray;
+    }
+
+.payment-options 
+{
+    margin: 2rem 0;
+}
+
+.payment-title {
+    font-size: 1.125rem;
+    margin-bottom: 1rem;
+    color: black;
+}
+
+.payment-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+}
+
+.payment-card {
+    display: block;
+    border: 2px solid gray;
+    border-radius: 1rem;
+    padding: 1.25rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background: white;
+}
+
+    .payment-card:hover {
+        border-color: #4F9A5E;
+        transform: translateY(-2px);
+    }
+
+    .payment-card input:checked + .payment-content {
+        border-color: #4F9A5E;
+    }
+
+.payment-content {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.payment-icon {
+    font-size: 1.5rem;
+}
+
+.payment-label {
+    font-weight: 500;
+}
+
+.submit-btn {
+    background: linear-gradient(135deg, #2c9c8a, #78982E);
+    border: none;
+    padding: 1rem 15rem;
+    border-radius: 25px;
+    transition: all 0.3s ease;
+    color: white;
+    white-space: nowrap;
+}
+
+
+    .submit-btn:hover {
+        opacity: 0.9;
+        transform: translateY(-2px);
+    }
+   
+    .submit-btn .btn-text{
+        white-space: nowrap;
+    }
+
+@media (max-width: 480px) {
+    .container {
+        padding: 1.5rem;
+    }
+
+    .payment-cards {
+        grid-template-columns: 1fr;
+    }
 }
