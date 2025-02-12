@@ -1,3 +1,4 @@
+using System.Security.Principal;
 using Holistica.Models.ViewModels;
 using Holistica.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -27,6 +28,12 @@ public class CartController : Controller
     {
         await _cartService.AddToCartAsync(productId);
         return RedirectToAction("ViewCart");
+    }
+
+    public async Task<IActionResult> AddToCartThroughDetails(Guid productId)
+    {
+        await _cartService.AddToCartAsync(productId);
+        return RedirectToAction("Index", "Shop");
     }
 
     public IActionResult ChangeQuantity(string productId, int adjustment)
