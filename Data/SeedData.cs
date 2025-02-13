@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Holistica.Data;
 
-public static class SessionExtension
+public static class SeedData
 {
     public static async Task Initialize(IServiceProvider serviceProvider)
     {

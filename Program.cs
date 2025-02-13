@@ -80,7 +80,7 @@ app.MapControllerRoute(
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
-    await SessionExtension.Initialize(services);
+    await SeedData.Initialize(services);
 }
 
 app.Run();
